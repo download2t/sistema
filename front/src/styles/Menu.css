@@ -1,0 +1,37 @@
+.menu {
+  background-color: #4a4e69;
+  padding: 10px;
+  text-align: center;
+}
+
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+.menu ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu ul li a:hover {
+  text-decoration: underline;
+}
+.logout-btn {
+  background: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  text-decoration: underline;
+}
