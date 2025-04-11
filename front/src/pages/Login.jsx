@@ -18,7 +18,7 @@ const Login = () => {
     try {
       // Enviar login para a API Django
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/login/",
+        "http://127.0.0.1:8000/login/",
         formData
       );
       const token = response.data.token;

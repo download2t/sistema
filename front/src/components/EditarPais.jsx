@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importando o hook useNavigate
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // Para acessar os parâmetros da rota e redirecionar
 import axios from "axios";
 import "../styles/CadastroPaisEstadoCidade.css";
 
 
+const EditarPais = () => {
+  const { id } = useParams(); // Obtém o ID do país a ser editado da URL
+  const navigate = useNavigate(); // Para redirecionar após a edição
 
-
-const CadastroPais = () => {
   const [formData, setFormData] = useState({
     nome: "",
     sigla: "",
@@ -17,7 +18,25 @@ const CadastroPais = () => {
   const [mensagem, setMensagem] = useState({ texto: "", tipo: "" }); // Mensagem de sucesso/erro
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Inicializando o hook para redirecionamento
+  useEffect(() => {
+    const fetchPais = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/pais/${id}/`);
+        setFormData(response.data); // Preenche os dados do formulário com os dados do país
+      } catch (error) {
+        console.error("Erro ao carregar país:", error);
+        setMensagem({
+          texto: "Erro ao carregar os dados do país.",
+          tipo: "erro",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPais();
+  }, [id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -47,17 +66,17 @@ const CadastroPais = () => {
 
     setLoading(true);
     try {
-      await axios.post("http://127.0.0.1:8000/pais/", formData);
-      setMensagem({ texto: "País cadastrado com sucesso!", tipo: "sucesso" });
+      await axios.put(`http://127.0.0.1:8000/pais/${id}/`, formData);
+      setMensagem({ texto: "País atualizado com sucesso!", tipo: "sucesso" });
 
-      // Redirecionar para a página de listagem de países após o cadastro
+      // Redirecionar para a página de listagem de países após a edição
       setTimeout(() => {
-        navigate("/listar-paises"); // Redireciona após um pequeno delay para exibir a mensagem
+        navigate("/listar-paises");
       }, 1000);
     } catch (error) {
-      console.error("Erro ao cadastrar país:", error.response || error);
+      console.error("Erro ao atualizar país:", error.response || error);
       setMensagem({
-        texto: "Falha ao cadastrar o país. Tente novamente.",
+        texto: "Falha ao atualizar o país. Tente novamente.",
         tipo: "erro",
       });
     } finally {
@@ -67,14 +86,14 @@ const CadastroPais = () => {
 
   return (
     <div className="cadastro-container">
-      <h2>Cadastro de País</h2>
+      <h2>Editar País</h2>
 
       {/* Exibição de Mensagem */}
       {mensagem.texto && (
         <div className={`alert ${mensagem.tipo}`}>{mensagem.texto}</div>
       )}
 
-      {loading && <p className="loading">Enviando dados...</p>}
+      {loading && <p className="loading">Carregando...</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Nome:</label>
@@ -121,14 +140,14 @@ const CadastroPais = () => {
           </select>
         </div>
         <button type="submit" className="btn-submit">
-          {loading ? "Enviando..." : "Cadastrar"}
+          {loading ? "Enviando..." : "Salvar Alterações"}
         </button>
       </form>
-      <a href="/" className="back-link">
-        Voltar para a página inicial
+      <a href="/listar-paises" className="back-link">
+        Voltar para a listagem de países
       </a>
     </div>
   );
 };
 
-export default CadastroPais;
+export default EditarPais;

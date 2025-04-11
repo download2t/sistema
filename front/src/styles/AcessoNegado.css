@@ -1,0 +1,30 @@
+.acesso-negado-container {
+  text-align: center;
+  margin-top: 5rem;
+  color: #333;
+}
+
+.acesso-negado-container h1 {
+  font-size: 2.5rem;
+  color: #e63946;
+}
+
+.acesso-negado-container p {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.voltar-link {
+  color: #1d3557;
+  text-decoration: none;
+  font-size: 1rem;
+  border: 1px solid #1d3557;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.voltar-link:hover {
+  background-color: #1d3557;
+  color: #fff;
+}
