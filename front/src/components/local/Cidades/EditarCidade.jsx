@@ -1,41 +1,69 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // Para acessar os parâmetros da rota e redirecionar
 import axios from "axios";
-import "../styles/CadastroPaisEstadoCidade.css";
+import "../../../styles/localizacao/CadastroPaisEstadoCidade.css";
 
+const EditarCidade = () => {
+  const { id } = useParams(); // Obtém o ID da cidade a ser editada da URL
+  const navigate = useNavigate(); // Para redirecionar após a edição
 
-
-
-
-const CadastroCidade = () => {
   const [formData, setFormData] = useState({
     nome: "",
     DDD: "",
     status_cidade: "A",
-    id_estado: "", // ID do estado selecionado
+    id_estado: "", // ID do estado associado à cidade
   });
 
-  const [mensagem, setMensagem] = useState({ texto: "", tipo: "" }); // Estado para mensagem de sucesso/erro
-  const [estados, setEstados] = useState([]); // Lista de estados
+  const [estados, setEstados] = useState([]); // Lista de estados para o dropdown
+  const [mensagem, setMensagem] = useState({ texto: "", tipo: "" }); // Mensagem de sucesso/erro
   const [loading, setLoading] = useState(false);
 
-  // Buscar lista de estados ao carregar o componente
   useEffect(() => {
-    const fetchEstados = async () => {
+    // Carregar dados da cidade selecionada
+    const fetchCidade = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get("http://127.0.0.1:8000/estados/");
-        setEstados(response.data); // Definir a lista de estados recebida
+        const response = await axios.get(
+          `http://127.0.0.1:8000/cidades/${id}/`
+        );
+        setFormData(response.data); // Preenche os dados do formulário com os dados da cidade
       } catch (error) {
-        console.error("Erro ao buscar estados:", error);
-        setMensagem({ texto: "Erro ao carregar estados.", tipo: "erro" });
+        console.error("Erro ao carregar cidade:", error);
+        setMensagem({
+          texto: "Erro ao carregar os dados da cidade.",
+          tipo: "erro",
+        });
+      } finally {
+        setLoading(false);
       }
     };
 
+    // Carregar lista de estados para o dropdown
+    const fetchEstados = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/estados/");
+        setEstados(response.data);
+      } catch (error) {
+        console.error("Erro ao carregar estados:", error);
+        setMensagem({
+          texto: "Erro ao carregar a lista de estados.",
+          tipo: "erro",
+        });
+      }
+    };
+
+    fetchCidade();
     fetchEstados();
-  }, []);
+  }, [id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Converter para maiúsculas apenas para os campos relevantes
+    const updatedValue =
+      name === "nome" || name === "DDD" ? value.toUpperCase() : value;
+
+    setFormData({ ...formData, [name]: updatedValue });
   };
 
   const handleSubmit = async (event) => {
@@ -53,7 +81,7 @@ const CadastroCidade = () => {
 
     if (DDD.length !== 3) {
       setMensagem({
-        texto: "O DDD deve ter exatamente 3 números.",
+        texto: "DDD deve ter exatamente 3 números.",
         tipo: "erro",
       });
       return;
@@ -61,33 +89,34 @@ const CadastroCidade = () => {
 
     setLoading(true);
     try {
-      await axios.post("http://127.0.0.1:8000/cidades/", formData);
-      setMensagem({ texto: "Cidade cadastrada com sucesso!", tipo: "sucesso" });
-      setFormData({ nome: "", DDD: "", status_cidade: "A", id_estado: "" });
+      await axios.put(`http://127.0.0.1:8000/cidades/${id}/`, formData);
+      setMensagem({ texto: "Cidade atualizada com sucesso!", tipo: "sucesso" });
+
+      // Redirecionar para a página de listagem de cidades após a edição
+      setTimeout(() => {
+        navigate("/listar-cidades");
+      }, 1000);
     } catch (error) {
-      console.error("Erro ao cadastrar cidade:", error.response || error);
+      console.error("Erro ao atualizar cidade:", error.response || error);
       setMensagem({
-        texto: "Falha ao cadastrar a cidade. Tente novamente.",
+        texto: "Falha ao atualizar a cidade. Tente novamente.",
         tipo: "erro",
       });
     } finally {
       setLoading(false);
-
-      // Limpar mensagem após 5 segundos
-      setTimeout(() => setMensagem({ texto: "", tipo: "" }), 5000);
     }
   };
 
   return (
     <div className="cadastro-container">
-      <h2>Cadastro de Cidade</h2>
+      <h2>Editar Cidade</h2>
 
       {/* Exibição de Mensagem */}
       {mensagem.texto && (
         <div className={`alert ${mensagem.tipo}`}>{mensagem.texto}</div>
       )}
 
-      {loading && <p className="loading">Enviando dados...</p>}
+      {loading && <p className="loading">Carregando...</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Nome:</label>
@@ -124,7 +153,7 @@ const CadastroCidade = () => {
             </option>
             {estados.map((estado) => (
               <option key={estado.id} value={estado.id}>
-                {estado.nome} ({estado.uf})
+                {estado.nome.toUpperCase()} ({estado.uf.toUpperCase()})
               </option>
             ))}
           </select>
@@ -141,14 +170,14 @@ const CadastroCidade = () => {
           </select>
         </div>
         <button type="submit" className="btn-submit">
-          {loading ? "Enviando..." : "Cadastrar"}
+          {loading ? "Enviando..." : "Salvar Alterações"}
         </button>
       </form>
-      <a href="/" className="back-link">
-        Voltar para a página inicial
+      <a href="/listar-cidades" className="back-link">
+        Voltar para a listagem de cidades
       </a>
     </div>
   );
 };
 
-export default CadastroCidade;
+export default EditarCidade;

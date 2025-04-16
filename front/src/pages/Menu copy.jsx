@@ -76,13 +76,13 @@ const Menu = () => {
                     {isLocalizacaoOpen && (
                       <ul className="submenu">
                         <li>
-                          <Link to="/listar-paises">Listar Países</Link>
+                          <Link to="/listar-paises">Países</Link>
                         </li>
                         <li>
-                          <Link to="/cadastro-estados">Estados</Link>
+                          <Link to="/listar-estados">Estados</Link>
                         </li>
                         <li>
-                          <Link to="/cadastro-cidades">Cidades</Link>
+                          <Link to="/listar-cidades">Cidades</Link>
                         </li>
                       </ul>
                     )}

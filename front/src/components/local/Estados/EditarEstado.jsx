@@ -1,38 +1,69 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // Para acessar os parâmetros da rota e redirecionar
 import axios from "axios";
-import "../styles/CadastroPaisEstadoCidade.css";
+import "../../../styles/localizacao/CadastroPaisEstadoCidade.css";
 
+const EditarEstado = () => {
+  const { id } = useParams(); // Obtém o ID do estado a ser editado da URL
+  const navigate = useNavigate(); // Para redirecionar após a edição
 
-
-
-const CadastroEstado = () => {
   const [formData, setFormData] = useState({
     nome: "",
     uf: "",
     status_estado: "A",
-    id_pais: "", // ID do país selecionado
+    id_pais: "", // ID do país associado ao estado
   });
 
-  const [mensagem, setMensagem] = useState({ texto: "", tipo: "" }); // Estado para mensagem de sucesso/erro
-  const [paises, setPaises] = useState([]); // Lista de países
+  const [paises, setPaises] = useState([]); // Lista de países para o dropdown
+  const [mensagem, setMensagem] = useState({ texto: "", tipo: "" }); // Mensagem de sucesso/erro
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Carregar dados do estado selecionado
+    const fetchEstado = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/estados/${id}/`
+        );
+        setFormData(response.data); // Preenche os dados do formulário com os dados do estado
+      } catch (error) {
+        console.error("Erro ao carregar estado:", error);
+        setMensagem({
+          texto: "Erro ao carregar os dados do estado.",
+          tipo: "erro",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Carregar lista de países para o dropdown
     const fetchPaises = async () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/pais/");
-        setPaises(response.data); // Definir a lista de países recebida
+        setPaises(response.data);
       } catch (error) {
-        console.error("Erro ao buscar países:", error);
-        setMensagem({ texto: "Erro ao carregar países.", tipo: "erro" });
+        console.error("Erro ao carregar países:", error);
+        setMensagem({
+          texto: "Erro ao carregar a lista de países.",
+          tipo: "erro",
+        });
       }
     };
+
+    fetchEstado();
     fetchPaises();
-  }, []);
+  }, [id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Converter o valor digitado para maiúsculas nos campos relevantes
+    const updatedValue =
+      name === "nome" || name === "uf" ? value.toUpperCase() : value;
+
+    setFormData({ ...formData, [name]: updatedValue });
   };
 
   const handleSubmit = async (event) => {
@@ -42,46 +73,50 @@ const CadastroEstado = () => {
 
     if (!nome || !uf || !id_pais) {
       setMensagem({
-        texto: "Preencha todos os campos obrigatórios.",
+        texto: "Por favor, preencha todos os campos obrigatórios.",
         tipo: "erro",
       });
       return;
     }
 
     if (uf.length !== 2) {
-      setMensagem({ texto: "UF deve ter exatamente 2 letras.", tipo: "erro" });
+      setMensagem({
+        texto: "UF deve ter exatamente 2 letras.",
+        tipo: "erro",
+      });
       return;
     }
 
     setLoading(true);
     try {
-      await axios.post("http://127.0.0.1:8000/estados/", formData);
-      setMensagem({ texto: "Estado cadastrado com sucesso!", tipo: "sucesso" });
-      setFormData({ nome: "", uf: "", status_estado: "A", id_pais: "" });
+      await axios.put(`http://127.0.0.1:8000/estados/${id}/`, formData);
+      setMensagem({ texto: "Estado atualizado com sucesso!", tipo: "sucesso" });
+
+      // Redirecionar para a página de listagem de estados após a edição
+      setTimeout(() => {
+        navigate("/listar-estados");
+      }, 1000);
     } catch (error) {
-      console.error("Erro ao cadastrar estado:", error.response || error);
+      console.error("Erro ao atualizar estado:", error.response || error);
       setMensagem({
-        texto: "Falha ao cadastrar o estado. Tente novamente.",
+        texto: "Falha ao atualizar o estado. Tente novamente.",
         tipo: "erro",
       });
     } finally {
       setLoading(false);
-
-      // Limpar mensagem após 5 segundos
-      setTimeout(() => setMensagem({ texto: "", tipo: "" }), 5000);
     }
   };
 
   return (
     <div className="cadastro-container">
-      <h2>Cadastro de Estado</h2>
+      <h2>Editar Estado</h2>
 
       {/* Exibição de Mensagem */}
       {mensagem.texto && (
         <div className={`alert ${mensagem.tipo}`}>{mensagem.texto}</div>
       )}
 
-      {loading && <p className="loading">Enviando dados...</p>}
+      {loading && <p className="loading">Carregando...</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Nome:</label>
@@ -118,7 +153,7 @@ const CadastroEstado = () => {
             </option>
             {paises.map((pais) => (
               <option key={pais.id} value={pais.id}>
-                {pais.nome}
+                {pais.nome.toUpperCase()}
               </option>
             ))}
           </select>
@@ -135,14 +170,14 @@ const CadastroEstado = () => {
           </select>
         </div>
         <button type="submit" className="btn-submit">
-          {loading ? "Enviando..." : "Cadastrar"}
+          {loading ? "Enviando..." : "Salvar Alterações"}
         </button>
       </form>
-      <a href="/" className="back-link">
-        Voltar para a página inicial
+      <a href="/listar-estados" className="back-link">
+        Voltar para a listagem de estados
       </a>
     </div>
   );
 };
 
-export default CadastroEstado;
+export default EditarEstado;

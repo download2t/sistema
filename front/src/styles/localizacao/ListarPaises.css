@@ -1,0 +1,166 @@
+/* Container Principal */
+.listagem-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título da Listagem */
+.listagem-titulo {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Botão Cadastrar */
+.btn-cadastrar {
+  display: block;
+  margin-bottom: 1.5rem;
+  margin-left: auto;
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-align: right;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cadastrar:hover {
+  background-color: #218838;
+}
+
+/* Tabela de Países */
+.tabela-paises {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.tabela-paises th {
+  text-align: left;
+  background-color: #92859b;
+  color: #fff;
+  padding: 0.75rem 1rem;
+}
+
+.tabela-paises td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+}
+
+/* Alinha botões de ações à direita */
+.tabela-paises td:last-child {
+  text-align: right;
+}
+
+.tabela-paises td:last-child .btn {
+  margin-left: 0.5rem;
+}
+
+/* Espaçamento entre linhas */
+.tabela-paises tr {
+  margin-bottom: 1rem;
+}
+
+.tabela-paises tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.tabela-paises tr:hover {
+  background-color: #e9ecef;
+}
+
+/* Botões Ações */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-visualizar {
+  background-color: #17a2b8;
+  color: #fff;
+  border: none;
+}
+
+.btn-visualizar:hover {
+  background-color: #138496;
+}
+
+.btn-editar {
+  background-color: #ffc107;
+  color: #fff;
+  border: none;
+}
+
+.btn-editar:hover {
+  background-color: #e0a800;
+}
+
+.btn-excluir {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+}
+
+.btn-excluir:hover {
+  background-color: #c82333;
+}
+
+/* Mensagem quando não há dados */
+.nenhum-dado {
+  text-align: center;
+  color: #666;
+  font-size: 1.25rem;
+  margin-top: 2rem;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 768px) {
+  .listagem-container {
+    padding: 1rem;
+    box-shadow: none;
+  }
+
+  .listagem-titulo {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-cadastrar {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .tabela-paises {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .tabela-paises th,
+  .tabela-paises td {
+    padding: 0.4rem;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .btn-visualizar,
+  .btn-editar,
+  .btn-excluir {
+    margin: 0.3rem auto;
+  }
+}

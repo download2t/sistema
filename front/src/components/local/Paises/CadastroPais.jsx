@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importando o hook useNavigate
 import axios from "axios";
-import "../styles/CadastroPaisEstadoCidade.css";
-
-
-
+import "../../../styles/localizacao/CadastroPaisEstadoCidade.css";
 
 const CadastroPais = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +18,14 @@ const CadastroPais = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Conversão para maiúsculas nos campos de texto
+    const updatedValue =
+      name === "nome" || name === "sigla" || name === "DDI"
+        ? value.toUpperCase()
+        : value;
+
+    setFormData({ ...formData, [name]: updatedValue });
   };
 
   const handleSubmit = async (event) => {

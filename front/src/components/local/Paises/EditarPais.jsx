@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Para acessar os parâmetros da rota e redirecionar
 import axios from "axios";
-import "../styles/CadastroPaisEstadoCidade.css";
-
+import "../../../styles/localizacao/CadastroPaisEstadoCidade.css";
 
 const EditarPais = () => {
   const { id } = useParams(); // Obtém o ID do país a ser editado da URL
@@ -40,7 +39,14 @@ const EditarPais = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Converter os valores digitados para maiúsculas nos campos relevantes
+    const updatedValue =
+      name === "nome" || name === "sigla" || name === "DDI"
+        ? value.toUpperCase()
+        : value;
+
+    setFormData({ ...formData, [name]: updatedValue });
   };
 
   const handleSubmit = async (event) => {
