@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../../styles/localizacao/VisualizarCidade.css";
+import "../../../styles/localizacao/VisualizarEstado.css";
 
 const VisualizarEstado = () => {
-  const { id } = useParams(); // Obtém o ID do estado da URL
-  const navigate = useNavigate(); // Navegação programática
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [estado, setEstado] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
@@ -14,7 +14,9 @@ const VisualizarEstado = () => {
     const fetchEstado = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/estados/${id}/`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/estados/${id}/`
+        );
         setEstado(response.data);
       } catch (error) {
         setMensagem("Erro ao carregar os detalhes do estado.");
@@ -26,36 +28,52 @@ const VisualizarEstado = () => {
     fetchEstado();
   }, [id]);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p className="loading">Carregando...</p>;
 
-  if (!estado) return <p>{mensagem || "Estado não encontrado."}</p>;
+  if (!estado)
+    return (
+      <p className="error-message">{mensagem || "Estado não encontrado."}</p>
+    );
 
   return (
     <div className="visualizar-container">
-      <h1>{estado.nome}</h1>
-      <div className="info-estado">
-        <p>
-          <strong>ID:</strong> {estado.id}
-        </p>
-        <p>
-          <strong>País:</strong> {estado.pais_nome}
-        </p>
-        <p>
-          <strong>Estado:</strong> {estado.nome}
-        </p>
-        <p>
-          <strong>UF:</strong> {estado.uf}
-        </p>
-        <p>
-          <strong>Status:</strong>{" "}
-          {estado.status_estado === "A" ? "Ativo" : "Inativo"}
-        </p>
+      <div className="estado-card">
+        <h1>{estado.nome}</h1>
+        <p className="estado-uf">UF: {estado.uf}</p>
+
+        <div className="info-group">
+          <p>
+            <strong>ID:</strong> {estado.id}
+          </p>
+          <p>
+            <strong>País:</strong> {estado.pais_nome}
+          </p>
+          <p>
+            <strong>Nome do Estado:</strong> {estado.nome}
+          </p>
+          <p>
+            <strong>UF:</strong> {estado.uf}
+          </p>
+          <p>
+            <strong>Status:</strong>{" "}
+            <span
+              className={
+                estado.status_estado === "A"
+                  ? "status-active"
+                  : "status-inactive"
+              }
+            >
+              {estado.status_estado === "A" ? "Ativo" : "Inativo"}
+            </span>
+          </p>
+        </div>
       </div>
+
       <button
         className="btn-voltar"
         onClick={() => navigate("/listar-estados")}
       >
-        Voltar
+        Voltar para a Lista
       </button>
     </div>
   );

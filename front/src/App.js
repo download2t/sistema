@@ -1,11 +1,8 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate,} from "react-router-dom";
 import Menu from "./pages/Menu";
+import PaginaErro404 from "./pages/PaginaErro404";
+import AcessoNegado from "./pages/AcessoNegado"; 
 
 import ListarPaises from "./components/local/Paises/ListarPaises";
 import CadastroPais from "./components/local/Paises/CadastroPais";
@@ -25,6 +22,13 @@ import EditarCidade from "./components/local/Cidades/EditarCidade";
 import VisualizarCidade from "./components/local/Cidades/VisualizarCidade";
 import ExcluirCidade from "./components/local/Cidades/ExcluirCidade";
 
+import ListarUsuarios from "./components/Usuarios/ListarUsuarios";
+import CadastroUsuario from "./components/Usuarios/CadastroUsuario";
+import EditarUsuario from "./components/Usuarios/EditarUsuario";
+import VisualizarUsuario from "./components/Usuarios/VisualizarUsuario";
+import ExcluirUsuario from "./components/Usuarios/ExcluirUsuario";
+
+
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import Login from "./pages/Login";
@@ -35,20 +39,23 @@ const AdminRedirect = () => {
   return null;
 };
 
+// Função para verificar autenticação
+const isAuthenticated = () => {
+  return localStorage.getItem("token") !== null;
+};
+
+// Componente de Rota Protegida
+function PrivateRoute({ children }) {
+  return isAuthenticated() ? children : <Navigate to="/acesso-negado" />;
+}
+
 function App() {
-  const isAuthenticated = () => {
-    return localStorage.getItem("token") !== null;
-  };
-
-  function PrivateRoute({ children }) {
-    return isAuthenticated() ? children : <Navigate to="/login" />;
-  }
-
   return (
     <Router>
       <Routes>
         {/* Rota para Login */}
         <Route path="/login" element={<Login />} />
+
         {/* Rota Protegida para Página Inicial */}
         <Route
           path="/"
@@ -60,6 +67,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         {/* Rota Protegida para Sobre */}
         <Route
           path="/sobre"
@@ -71,7 +79,8 @@ function App() {
             </PrivateRoute>
           }
         />
-        {/* Rota Protegida para Listar Paises */}
+
+        {/* PÁGINAS DE PAÍSES */}
         <Route
           path="/listar-paises"
           element={
@@ -82,7 +91,6 @@ function App() {
             </PrivateRoute>
           }
         />
-        {/* Rota Protegida para Cadastros */}
         <Route
           path="/cadastro-pais"
           element={
@@ -93,7 +101,6 @@ function App() {
             </PrivateRoute>
           }
         />
-        {/* Rota Protegida para Editar */}
         <Route
           path="/editar-pais/:id"
           element={
@@ -125,6 +132,7 @@ function App() {
           }
         />
 
+        {/* PÁGINAS DE ESTADOS */}
         <Route
           path="/listar-estados"
           element={
@@ -155,7 +163,6 @@ function App() {
             </PrivateRoute>
           }
         />
-
         <Route
           path="/visualizar-estado/:id"
           element={
@@ -177,6 +184,7 @@ function App() {
           }
         />
 
+        {/* PÁGINAS DE CIDADES */}
         <Route
           path="/listar-cidades"
           element={
@@ -228,7 +236,59 @@ function App() {
           }
         />
 
-        {/* Rota para Admin */}
+        {/* PÁGINAS DE USUÁRIOS */}
+        <Route
+          path="/listar-usuarios"
+          element={
+            <PrivateRoute>
+              <MenuWrapper>
+                <ListarUsuarios />
+              </MenuWrapper>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cadastro-usuario"
+          element={
+            <PrivateRoute>
+              <MenuWrapper>
+                <CadastroUsuario />
+              </MenuWrapper>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/editar-usuario/:id"
+          element={
+            <PrivateRoute>
+              <MenuWrapper>
+                <EditarUsuario />
+              </MenuWrapper>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/visualizar-usuario/:id"
+          element={
+            <PrivateRoute>
+              <MenuWrapper>
+                <VisualizarUsuario />
+              </MenuWrapper>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/excluir-usuario/:id"
+          element={
+            <PrivateRoute>
+              <MenuWrapper>
+                <ExcluirUsuario />
+              </MenuWrapper>
+            </PrivateRoute>
+          }
+        />
+
+        {/* Rota Protegida para Admin */}
         <Route
           path="/admin"
           element={
@@ -237,6 +297,12 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        {/* Rota de Acesso Negado */}
+        <Route path="/acesso-negado" element={<AcessoNegado />} />
+
+        {/* Rota 404 para páginas inexistentes */}
+        <Route path="*" element={<PaginaErro404 />} />
       </Routes>
     </Router>
   );

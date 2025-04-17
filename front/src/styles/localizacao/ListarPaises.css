@@ -74,7 +74,7 @@
 }
 
 .tabela-paises tr:hover {
-  background-color: #e9ecef;
+  background-color: #ebe8e8;
 }
 
 /* Botões Ações */
@@ -110,11 +110,21 @@
   background-color: #dc3545;
   color: #fff;
   border: none;
+  cursor: pointer; /* Mantenha o cursor padrão */
 }
 
 .btn-excluir:hover {
   background-color: #c82333;
 }
+
+/* Estilização do botão desativado */
+.btn-excluir:disabled {
+  background-color: #aaaaaa; /* Cinza mais claro */
+  color: #ffffff88; /* Texto mais opaco */
+  cursor: not-allowed; /* Sinaliza visualmente que o botão não está clicável */
+  opacity: 0.6;
+}
+
 
 /* Mensagem quando não há dados */
 .nenhum-dado {

@@ -140,6 +140,7 @@ const EditarPais = () => {
             name="status_pais"
             value={formData.status_pais}
             onChange={handleChange}
+            disabled={loading} // Desativa enquanto carrega
           >
             <option value="A">Ativo</option>
             <option value="I">Inativo</option>
@@ -149,9 +150,12 @@ const EditarPais = () => {
           {loading ? "Enviando..." : "Salvar Alterações"}
         </button>
       </form>
-      <a href="/listar-paises" className="back-link">
-        Voltar para a listagem de países
-      </a>
+      <button
+        onClick={() => navigate("/listar-paises")}
+        className="btn btn-cancelar"
+        disabled={loading}>
+        Cancelar
+      </button>
     </div>
   );
 };

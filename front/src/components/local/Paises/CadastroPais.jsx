@@ -119,18 +119,25 @@ const CadastroPais = () => {
             name="status_pais"
             value={formData.status_pais}
             onChange={handleChange}
+            disabled={loading} // Desativa enquanto carrega
           >
             <option value="A">Ativo</option>
             <option value="I">Inativo</option>
           </select>
         </div>
-        <button type="submit" className="btn-submit">
+
+        <button type="submit" className="btn-submit" disabled={loading}>
           {loading ? "Enviando..." : "Cadastrar"}
         </button>
+        
+        <button
+          onClick={() => navigate("/listar-paises")}
+          className="btn btn-cancelar"
+          disabled={loading}
+        >
+          Cancelar
+        </button>
       </form>
-      <a href="/" className="back-link">
-        Voltar para a página inicial
-      </a>
     </div>
   );
 };

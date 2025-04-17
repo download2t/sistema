@@ -1,0 +1,136 @@
+/* Estilo geral da listagem */
+.listagem-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.listagem-titulo {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Botão de cadastro */
+.btn-cadastrar {
+  display: block;
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
+  float: right;
+  margin-bottom: 20px;
+}
+
+.btn-cadastrar:hover {
+  background: #218838;
+}
+
+/* Estilo da tabela */
+.tabela-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tabela-usuarios th, 
+.tabela-usuarios td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-usuarios th {
+  background: #9a8c98;
+  color: white;
+  font-weight: bold;
+}
+
+.tabela-usuarios td {
+  color: #333;
+}
+
+.tabela-usuarios tr:hover {
+  background: #ebe8e8;
+}
+
+/* Alinhar ações à direita */
+.acoes {
+  text-align: right;
+}
+
+/* Botão de toggle ativo/inativo */
+.btn-toggle {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-toggle.ativo {
+  background: #28a745;
+  color: white;
+}
+
+.btn-toggle.inativo {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-toggle:hover {
+  opacity: 0.8;
+}
+
+/* Botões de ação */
+.btn {
+  padding: 8px 12px;
+  margin: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+.btn-visualizar {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-visualizar:hover {
+  background: #138496;
+}
+
+.btn-editar {
+  background: #ffc107;
+  color: black;
+}
+
+.btn-editar:hover {
+  background: #e0a800;
+}
+
+.btn-excluir {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-excluir:hover {
+  background: #c82333;
+}
+
+/* Alinha botões de ações à direita */
+.tabela-usuarios td:last-child {
+  text-align: right;
+}

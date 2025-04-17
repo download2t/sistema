@@ -7,7 +7,7 @@ import {
   FaInfoCircle,
   FaSignOutAlt,
   FaCaretDown,
-  FaUserShield, // Ícone para o Admin
+  FaUserShield,
 } from "react-icons/fa";
 import "../styles/Menu.css";
 
@@ -15,19 +15,16 @@ const Menu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Controle do menu móvel
   const [isCadastrosOpen, setIsCadastrosOpen] = useState(false); // Controle do submenu Cadastros
   const [isLocalizacaoOpen, setIsLocalizacaoOpen] = useState(false); // Controle do submenu Localização
+  const [isOutroGrupoOpen, setIsOutroGrupoOpen] = useState(false); // Outro grupo de submenus
+
   const navigate = useNavigate();
 
-  const handleToggleMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const handleToggleCadastros = () => {
-    setIsCadastrosOpen(!isCadastrosOpen);
-  };
-
-  const handleToggleLocalizacao = () => {
+  // Alternar menus
+  const handleToggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleToggleCadastros = () => setIsCadastrosOpen(!isCadastrosOpen);
+  const handleToggleLocalizacao = () =>
     setIsLocalizacaoOpen(!isLocalizacaoOpen);
-  };
+  const handleToggleOutroGrupo = () => setIsOutroGrupoOpen(!isOutroGrupoOpen);
 
   const handleLogout = () => {
     const confirmed = window.confirm(
@@ -51,6 +48,7 @@ const Menu = () => {
         </button>
         <nav className={`nav ${isMobileMenuOpen ? "nav-open" : ""}`}>
           <ul className="menu-list">
+            {/* Nível Primário */}
             <li>
               <Link to="/">
                 <FaHome />
@@ -66,6 +64,7 @@ const Menu = () => {
               </button>
               {isCadastrosOpen && (
                 <ul className="submenu">
+                  {/* Nível Secundário */}
                   <li className="has-submenu">
                     <button
                       className="submenu-toggle"
@@ -75,6 +74,7 @@ const Menu = () => {
                     </button>
                     {isLocalizacaoOpen && (
                       <ul className="submenu">
+                        {/* Nível Terciário */}
                         <li>
                           <Link to="/listar-paises">Países</Link>
                         </li>
@@ -83,6 +83,27 @@ const Menu = () => {
                         </li>
                         <li>
                           <Link to="/listar-cidades">Cidades</Link>
+                        </li>
+                      </ul>
+                    )}
+                  </li>
+                  <li className="has-submenu">
+                    <button
+                      className="submenu-toggle"
+                      onClick={handleToggleOutroGrupo}
+                    >
+                      Pessoa <FaCaretDown />
+                    </button>
+                    {isOutroGrupoOpen && (
+                      <ul className="submenu">
+                        <li>
+                          <Link to="/listar-clientes">Clientes</Link>
+                        </li>
+                        <li>
+                          <Link to="/listar-fornecedores">Fornecedores</Link>
+                        </li>
+                        <li>
+                          <Link to="/listar-usuarios">Usuários</Link>
                         </li>
                       </ul>
                     )}
@@ -98,7 +119,7 @@ const Menu = () => {
             </li>
             <li>
               <a
-                href="http://localhost:8000/admin/" // URL absoluta para o Admin
+                href="http://localhost:8000/admin/"
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -1,0 +1,40 @@
+.erro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.erro-titulo {
+  font-size: 3rem;
+  color: #dc3545;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.erro-descricao {
+  font-size: 1.5rem;
+  color: #6c757d;
+  max-width: 600px;
+}
+
+.btn-voltar {
+  margin-top: 30px;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.btn-voltar:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}

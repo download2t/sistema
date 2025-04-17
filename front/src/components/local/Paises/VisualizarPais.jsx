@@ -4,8 +4,8 @@ import axios from "axios";
 import "../../../styles/localizacao/VisualizarPais.css";
 
 const VisualizarPais = () => {
-  const { id } = useParams(); // Obtém o ID do país da URL
-  const navigate = useNavigate(); // Navegação programática
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [pais, setPais] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
@@ -26,33 +26,47 @@ const VisualizarPais = () => {
     fetchPais();
   }, [id]);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p className="loading">Carregando...</p>;
 
-  if (!pais) return <p>{mensagem || "País não encontrado."}</p>;
+  if (!pais)
+    return (
+      <p className="error-message">{mensagem || "País não encontrado."}</p>
+    );
 
   return (
     <div className="visualizar-container">
-      <h1>{pais.nome}</h1>
-      <div className="info-pais">
-        <p>
-          <strong>ID:</strong> {pais.id}
-        </p>
-        <p>
-          <strong>Nome:</strong> {pais.nome}
-        </p>
-        <p>
-          <strong>Sigla:</strong> {pais.sigla}
-        </p>
-        <p>
-          <strong>DDI:</strong> {pais.DDI}
-        </p>
-        <p>
-          <strong>Status:</strong>{" "}
-          {pais.status_pais === "A" ? "Ativo" : "Inativo"}
-        </p>
+      <div className="pais-card">
+        <h1>{pais.nome}</h1>
+        <p className="pais-sigla">Sigla: {pais.sigla}</p>
+
+        <div className="info-group">
+          <p>
+            <strong>ID:</strong> {pais.id}
+          </p>
+          <p>
+            <strong>Nome:</strong> {pais.nome}
+          </p>
+          <p>
+            <strong>Sigla:</strong> {pais.sigla}
+          </p>
+          <p>
+            <strong>DDI:</strong> +{pais.DDI}
+          </p>
+          <p>
+            <strong>Status:</strong>{" "}
+            <span
+              className={
+                pais.status_pais === "A" ? "status-active" : "status-inactive"
+              }
+            >
+              {pais.status_pais === "A" ? "Ativo" : "Inativo"}
+            </span>
+          </p>
+        </div>
       </div>
+
       <button className="btn-voltar" onClick={() => navigate("/listar-paises")}>
-        Voltar
+        Voltar para a Lista
       </button>
     </div>
   );

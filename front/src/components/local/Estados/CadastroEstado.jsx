@@ -130,18 +130,25 @@ const CadastroEstado = () => {
             name="status_estado"
             value={formData.status_estado}
             onChange={handleChange}
+            disabled={loading} // Desativa enquanto carrega
           >
             <option value="A">Ativo</option>
             <option value="I">Inativo</option>
           </select>
         </div>
-        <button type="submit" className="btn-submit">
+
+        <button type="submit" className="btn-submit" disabled={loading}>
           {loading ? "Enviando..." : "Cadastrar"}
         </button>
+
       </form>
-      <a href="/listar-estados" className="back-link">
-        Voltar para a listagem de estados
-      </a>
+      <button
+        onClick={() => navigate("/listar-estados")}
+        className="btn btn-cancelar"
+        disabled={loading} // Bloqueia interação até a ação ser concluída
+      >
+        Cancelar
+      </button>
     </div>
   );
 };

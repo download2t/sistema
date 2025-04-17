@@ -4,8 +4,8 @@ import axios from "axios";
 import "../../../styles/localizacao/VisualizarCidade.css";
 
 const VisualizarCidade = () => {
-  const { id } = useParams(); // Obtém o ID da cidade da URL
-  const navigate = useNavigate(); // Navegação programática
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [cidade, setCidade] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
@@ -28,36 +28,52 @@ const VisualizarCidade = () => {
     fetchCidade();
   }, [id]);
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p className="loading">Carregando...</p>;
 
-  if (!cidade) return <p>{mensagem || "Cidade não encontrada."}</p>;
+  if (!cidade)
+    return (
+      <p className="error-message">{mensagem || "Cidade não encontrada."}</p>
+    );
 
   return (
     <div className="visualizar-container">
-      <h1>{cidade.nome}</h1>
-      <div className="info-cidade">
-        <p>
-          <strong>ID:</strong> {cidade.id}
-        </p>
-        <p>
-          <strong>Estado:</strong> {cidade.estado_nome}
-        </p>
-        <p>
-          <strong>Cidade:</strong> {cidade.nome}
-        </p>
-        <p>
-          <strong>DDD:</strong> {cidade.DDD}
-        </p>
-        <p>
-          <strong>Status:</strong>{" "}
-          {cidade.status_cidade === "A" ? "Ativo" : "Inativo"}
-        </p>
+      <div className="cidade-card">
+        <h1>{cidade.nome}</h1>
+        <p className="cidade-ddd">DDD: +{cidade.DDD}</p>
+
+        <div className="info-group">
+          <p>
+            <strong>ID:</strong> {cidade.id}
+          </p>
+          <p>
+            <strong>Estado:</strong> {cidade.estado_nome}
+          </p>
+          <p>
+            <strong>Nome da Cidade:</strong> {cidade.nome}
+          </p>
+          <p>
+            <strong>DDD:</strong> +{cidade.DDD}
+          </p>
+          <p>
+            <strong>Status:</strong>{" "}
+            <span
+              className={
+                cidade.status_cidade === "A"
+                  ? "status-active"
+                  : "status-inactive"
+              }
+            >
+              {cidade.status_cidade === "A" ? "Ativo" : "Inativo"}
+            </span>
+          </p>
+        </div>
       </div>
+
       <button
         className="btn-voltar"
         onClick={() => navigate("/listar-cidades")}
       >
-        Voltar
+        Voltar para a Lista
       </button>
     </div>
   );

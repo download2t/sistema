@@ -9,7 +9,7 @@
   text-align: center;
 }
 
-.estado-card {
+.user-card {
   padding: 1.5rem;
   background-color: #f9f9f9;
   border-radius: 6px;
@@ -22,12 +22,6 @@ h1 {
   margin-bottom: 1rem;
 }
 
-.estado-uf {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #007bff;
-}
-
 .info-group {
   font-size: 1.2rem;
   margin: 1rem 0;
@@ -37,6 +31,7 @@ h1 {
   margin: 0.75rem 0;
   font-size: 1rem;
   color: #555;
+  
 }
 
 .status-active {
@@ -63,3 +58,4 @@ h1 {
 .btn-voltar:hover {
   background-color: #0056b3;
 }
+
