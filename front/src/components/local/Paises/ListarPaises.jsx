@@ -58,16 +58,12 @@ const ListarPaises = () => {
   return (
     <div className="listagem-container">
       <h1 className="listagem-titulo">Gerenciamento de Países</h1>
-
-      {userPermissions.includes("app.add_pais") && (
         <button
           className="btn btn-cadastrar"
           onClick={() => navigate("/cadastro-pais")}
         >
           + Cadastrar País
         </button>
-      )}
-
       {mensagem.texto && (
         <div className={`alert ${mensagem.tipo}`}>{mensagem.texto}</div>
       )}
